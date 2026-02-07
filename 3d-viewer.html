@@ -547,20 +547,28 @@
             // Scroll Animations
             function initScrollAnimations() {
                 console.log('Initializing scroll animations');
-                const finalEarthX = 8.0; // 大幅增加移動距離，讓地球移到畫面右側
                 const initialScale = earthModel.scale.x;
-                const enlargedScale = initialScale * 1.4; // 放大 40%
+                const enlargedScale = initialScale * 1.5; // 放大 50% (原本 40% + 再大 10%)
 
-                // 地球移動 + 放大動畫
+                // 使用 GSAP 移動 canvas-container 到右邊
+                gsap.to('#canvas-container', {
+                    x: '30%', // 往右移動 30% (往左調整 10%)
+                    ease: 'none', // 使用線性緩動，配合 scrub 更流暢
+                    scrollTrigger: {
+                        trigger: '.scroll-container',
+                        start: 'top top',
+                        end: '50% top',
+                        scrub: 1.5, // 增加 scrub 值，讓動畫更平滑
+                    }
+                });
+
+                // 地球放大動畫
                 ScrollTrigger.create({
                     trigger: '.scroll-container',
                     start: 'top top',
                     end: '50% top',
                     scrub: 1,
                     onUpdate: (self) => {
-                        // 移動地球
-                        earthTargetX = self.progress * finalEarthX;
-
                         // 漸進放大地球 (從 1.0 到 1.4 倍)
                         const currentScale = initialScale + (enlargedScale - initialScale) * self.progress;
                         earthModel.scale.setScalar(currentScale);
@@ -591,7 +599,6 @@
                     start: '50% top',
                     end: 'bottom bottom',
                     onEnter: () => {
-                        earthTargetX = finalEarthX;
                         controls.enabled = false; // 禁用拖拉
                         controls.autoRotate = true; // 保持自動旋轉
                         earthModel.scale.setScalar(enlargedScale); // 確保放大到 1.4 倍
@@ -648,12 +655,6 @@
                 mouseY += (targetY - mouseY) * 0.05;
 
                 if (earthModel) {
-                    // 平滑移動地球位置
-                    earthPivot.position.x += (earthTargetX - earthPivot.position.x) * 0.1;
-
-                    // 更新 OrbitControls 的軸心位置，跟隨地球
-                    controls.target.set(earthPivot.position.x, 0, 0);
-
                     // 滑鼠互動傾斜效果（只在第一區塊啟用）
                     if (controls.enabled) {
                         earthModel.rotation.x = mouseY * 0.3;
