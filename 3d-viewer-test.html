@@ -17,7 +17,7 @@
         }
 
         .scroll-container {
-            height: 300vh;
+            height: 400vh; /* 增加高度以容納工作流程區塊 */
         }
 
         #canvas-container {
@@ -273,6 +273,127 @@
             color: #888;
             margin-bottom: 8px;
         }
+
+        /* Work Process Section */
+        .work-process-section {
+            position: relative;
+            min-height: 100vh;
+            background: #E8DED0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            z-index: 20;
+            opacity: 0;
+        }
+
+        .work-process-title {
+            font-size: 64px;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 80px;
+            letter-spacing: -0.02em;
+        }
+
+        .process-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            max-width: 1400px;
+            margin-bottom: 60px;
+        }
+
+        .process-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-circle {
+            width: 280px;
+            height: 280px;
+            border: 2px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: transparent;
+            position: relative;
+        }
+
+        .step-circle::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            right: -4px;
+            transform: translateY(-50%);
+        }
+
+        .process-step:last-child .step-circle::before {
+            display: none;
+        }
+
+        .step-connector {
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background: rgba(0, 0, 0, 0.15);
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .process-step:last-child .step-connector {
+            display: none;
+        }
+
+        .step-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            text-decoration: underline;
+        }
+
+        .step-price {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .book-call-btn {
+            padding: 16px 48px;
+            background: #E8D800;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-call-btn:hover {
+            background: #d4c600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 216, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -393,6 +514,59 @@
                 <div class="stats-footer">GDP：全192カ国　WHR：全147カ国</div>
             </div>
         </div>
+
+        <!-- Work Process Section - Cut 3 -->
+        <section class="work-process-section">
+            <h2 class="work-process-title">( 工作流程 )</h2>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-circle">
+                        <h3 class="step-title">探索研究</h3>
+                        <p class="step-price">From $1.4k</p>
+                        <p class="step-description">深入研究市場<br>挖掘深層洞察！</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-circle">
+                        <h3 class="step-title">品牌塑造</h3>
+                        <p class="step-price">From $0.9k</p>
+                        <p class="step-description">打造大膽品牌<br>深植人心記憶</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-circle">
+                        <h3 class="step-title">介面設計</h3>
+                        <p class="step-price">From $1.4k</p>
+                        <p class="step-description">直覺化介面<br>取悅所有使用者</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-circle">
+                        <h3 class="step-title">行銷推廣</h3>
+                        <p class="step-price">From $1.9k</p>
+                        <p class="step-description">數據驅動廣告<br>點擊轉化現金！</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-circle">
+                        <h3 class="step-title">數據分析</h3>
+                        <p class="step-price">From $0.9k</p>
+                        <p class="step-description">端到端分析<br>全面清晰洞察</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="book-call-btn">預約諮詢</button>
+        </section>
     </div>
 
     <!-- Three.js r128 - stable version with proper UMD builds -->
@@ -635,6 +809,54 @@
                         });
                     },
                     once: true
+                });
+
+                // Cut 2 -> Cut 3: Stats fade out, Earth exits, Work Process enters
+                // Stats fade out
+                gsap.to('.stats-overlay', {
+                    opacity: 0,
+                    scrollTrigger: {
+                        trigger: '.scroll-container',
+                        start: '65% top',
+                        end: '75% top',
+                        scrub: 1,
+                    }
+                });
+
+                // Canvas (Earth) fade out and exit
+                gsap.to('#canvas-container', {
+                    opacity: 0,
+                    x: '50%', // 繼續往右移出畫面
+                    scrollTrigger: {
+                        trigger: '.scroll-container',
+                        start: '65% top',
+                        end: '80% top',
+                        scrub: 1.5,
+                    }
+                });
+
+                // Work Process section fade in
+                gsap.to('.work-process-section', {
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: '.scroll-container',
+                        start: '75% top',
+                        end: '85% top',
+                        scrub: 1,
+                    }
+                });
+
+                // Process steps animate in (stagger effect)
+                gsap.from('.process-step', {
+                    y: 50,
+                    opacity: 0,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: '.work-process-section',
+                        start: 'top 60%',
+                        end: 'top 40%',
+                        scrub: 1,
+                    }
                 });
             }
 
